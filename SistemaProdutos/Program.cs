@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using SistemaProdutos.Data;
 using SistemaProdutos.Repositorios;
 using SistemaProdutos.Repositorios.Interfaces;
+using Microsoft.AspNetCore.Builder;
+
 
 namespace SistemaProdutos
 {
@@ -31,7 +33,16 @@ namespace SistemaProdutos
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                //app.UseSwaggerUI();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API V1");
+
+                    // Desabilitar a validação de certificados
+                    c.ConfigObject.ValidatorUrl = null;
+                    c.ConfigObject.AdditionalItems["validatorUrl"] = null;
+                });
             }
 
             app.UseHttpsRedirection();
