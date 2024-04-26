@@ -13,7 +13,7 @@ namespace SistemaProdutos.Data.Map
             builder.Property(x => x.Descricao).HasMaxLength(100);
             builder.Property(x => x.Peso).IsRequired();
             builder.Property(x => x.Valor).IsRequired();
-            builder.Property(x => x.Status).HasDefaultValue(true);
+            builder.Property(x => x.Status).HasDefaultValue(false);
         }
     }
 }
