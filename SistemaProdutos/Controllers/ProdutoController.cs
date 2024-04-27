@@ -33,14 +33,14 @@ namespace SistemaProdutos.Controllers
             ProdutoModel produto = await _produtoRepositorio.AdicionarProduto(produtoModel);
             return Ok(produto);
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult<ProdutoController>> AtualizarProduto([FromBody] ProdutoModel produtoModel, int id)
         {
             produtoModel.IdProduto = id;
             ProdutoModel produto = await _produtoRepositorio.AtualizarProdutoPorId(produtoModel, id);
             return Ok(produto);
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<ProdutoController>> InativarProduto(int id)
         {
             bool inativar = await _produtoRepositorio.InativarProduto(id);
