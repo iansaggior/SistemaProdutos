@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaProdutos.Data;
 
@@ -11,9 +12,11 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    partial class SistemaProdutosDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240428035837_DataAlteracao")]
+    partial class DataAlteracao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace SistemaProdutos.Migrations
                     b.Property<DateTime>("DataAlteracao")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValue(new DateTime(2024, 4, 28, 0, 58, 37, 325, DateTimeKind.Local).AddTicks(8782));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)

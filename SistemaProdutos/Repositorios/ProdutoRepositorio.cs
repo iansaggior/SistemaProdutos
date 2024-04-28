@@ -48,7 +48,7 @@ namespace SistemaProdutos.Repositorios
 
             await _dbContext.Produtos_AUDIT.AddAsync(prodAudt);
 
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
 
             ProdutoBuscaId.Nome = produto.Nome;
             ProdutoBuscaId.Descricao = produto.Descricao;
@@ -58,7 +58,7 @@ namespace SistemaProdutos.Repositorios
 
             _dbContext.Produtos.Update(ProdutoBuscaId);
 
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
 
             prodAudt = new ProdutoAuditModel(ProdutoBuscaId, true) {
                 TypeAudit = "NEW"
