@@ -11,10 +11,12 @@ namespace SistemaProdutos.Data
         }
 
         public DbSet<ProdutoModel> Produtos { get; set; }
+        public DbSet<ProdutoAuditModel> Produtos_AUDIT { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProdutoMap());
+            modelBuilder.ApplyConfiguration(new ProdutoAuditMap());
             base.OnModelCreating(modelBuilder);
         }
     }

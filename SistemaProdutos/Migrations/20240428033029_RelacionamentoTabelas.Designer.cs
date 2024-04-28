@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaProdutos.Data;
 
@@ -11,9 +12,11 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    partial class SistemaProdutosDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240428033029_RelacionamentoTabelas")]
+    partial class RelacionamentoTabelas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
