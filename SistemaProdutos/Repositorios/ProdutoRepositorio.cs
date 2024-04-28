@@ -37,6 +37,16 @@ namespace SistemaProdutos.Repositorios
 
             await _dbContext.SaveChangesAsync();
 
+            //var testeProduto = produto;
+            //Console.Write(testeProduto);
+            //Console.WriteLine();
+            var logMovimentacao = new LogMovimentoModel {
+                ProdutoId = produto.ProdutoId,
+                TextoMovimento = $"Criação do produto {produto.ProdutoId} com {produto.Quantidade} unidades"
+            };
+            await _dbContext.LogMovimentos.AddAsync(logMovimentacao);
+            await _dbContext.SaveChangesAsync();
+
             return produto;
         }
 
