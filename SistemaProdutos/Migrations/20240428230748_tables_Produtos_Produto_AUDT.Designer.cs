@@ -12,8 +12,8 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    [Migration("20240428033029_RelacionamentoTabelas")]
-    partial class RelacionamentoTabelas
+    [Migration("20240428230748_tables_Produtos_Produto_AUDT")]
+    partial class tables_Produtos_Produto_AUDT
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,11 @@ namespace SistemaProdutos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
 
+                    b.Property<DateTime>("DataAlteracao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -50,6 +55,9 @@ namespace SistemaProdutos.Migrations
 
                     b.Property<int?>("ProdutoId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Quantidade")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TypeAudit")
                         .IsRequired()
@@ -88,6 +96,9 @@ namespace SistemaProdutos.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Peso")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Quantidade")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Valor")

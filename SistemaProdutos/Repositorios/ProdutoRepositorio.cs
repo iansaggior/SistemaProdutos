@@ -53,6 +53,7 @@ namespace SistemaProdutos.Repositorios
             ProdutoBuscaId.Nome = produto.Nome;
             ProdutoBuscaId.Descricao = produto.Descricao;
             ProdutoBuscaId.Valor = produto.Valor;
+            ProdutoBuscaId.Quantidade = produto.Quantidade;
             ProdutoBuscaId.Peso = produto.Peso;
             ProdutoBuscaId.Inativo = produto.Inativo;
 
@@ -76,9 +77,21 @@ namespace SistemaProdutos.Repositorios
         public async Task<bool> InativarProduto(int id)
         {
             ProdutoModel ProdutoBuscaId = await BuscarProdutoPorId(id);
+
+            var prodAudt = new ProdutoAuditModel(ProdutoBuscaId, true);
+            await _dbContext.Produtos_AUDIT.AddAsync(prodAudt);
+
             ProdutoBuscaId.Inativo = !ProdutoBuscaId.Inativo;
 
             _dbContext.Produtos.Update(ProdutoBuscaId);
+
+            prodAudt = new ProdutoAuditModel(ProdutoBuscaId, true)
+            {
+                TypeAudit = "NEW"
+            };
+            await _dbContext.Produtos_AUDIT.AddAsync(prodAudt);
+
+
             await _dbContext.SaveChangesAsync();
 
             return true;
