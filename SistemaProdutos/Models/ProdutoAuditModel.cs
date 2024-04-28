@@ -10,6 +10,7 @@
         public decimal Peso { get; set; }
         public bool Inativo { get; set; }
         public string TypeAudit { get; set; }
+        public DateTime DataAlteracao { get; set; }
         public virtual ProdutoModel? Produto { get; set; }
         public ProdutoAuditModel()
         {

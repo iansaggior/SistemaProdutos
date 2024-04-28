@@ -14,6 +14,7 @@ namespace SistemaProdutos.Data.Map
             builder.Property(x => x.Peso).IsRequired();
             builder.Property(x => x.Valor).IsRequired();
             builder.Property(x => x.Inativo);
+            builder.Property(x => x.DataAlteracao).HasDefaultValueSql("GETDATE()");
             builder.Property(x => x.ProdutoId);
 
             builder.HasOne(x => x.Produto);
