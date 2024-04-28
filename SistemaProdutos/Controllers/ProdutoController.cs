@@ -36,7 +36,7 @@ namespace SistemaProdutos.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProdutoController>> AtualizarProduto([FromBody] ProdutoModel produtoModel, int id)
         {
-            produtoModel.IdProduto = id;
+            produtoModel.ProdutoId = id;
             ProdutoModel produto = await _produtoRepositorio.AtualizarProdutoPorId(produtoModel, id);
             return Ok(produto);
         }
