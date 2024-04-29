@@ -9,5 +9,8 @@ namespace SistemaProdutos.Repositorios.Interfaces
         Task<ProdutoModel> AdicionarProduto(ProdutoModel produto);
         Task<ProdutoModel> AtualizarProdutoPorId(ProdutoModel produto, int id);
         Task<bool> InativarProduto(int id);
+
+        Task<bool> AddQuantidadeProduto(int ProdutoId, decimal qtde);
+        Task<bool> RemovQuantidadeProduto(int ProdutoId, decimal qtde);
     }
 }
