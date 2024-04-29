@@ -182,13 +182,15 @@ namespace SistemaProdutos.Repositorios
                 var prodAudt = new ProdutoAuditModel(ProdutoBuscaId, true);
                 await _dbContext.Produtos_AUDIT.AddAsync(prodAudt);
 
-                decimal qtdeDisp = ProdutoBuscaId.Quantidade;
-                decimal qtdeUpdate = (qtdeDisp - Math.Abs(qtde));
-
-                if (qtdeUpdate < 0)
-                    throw new Exception($"Você está tentando remover uma quantidade superior em relação a quantidade disponivel no estoque!! Quantidade disponivel: {qtdeDisp} unidade(s)");
+                if (ProdutoBuscaId.Quantidade == 0)
+                    throw new Exception($"ESTOQUE INDISPONÍVEL!!");
+                                        
+                if (ProdutoBuscaId.Quantidade < Math.Abs(qtde))
+                    throw new Exception($"Você está tentando remover uma quantidade superior em relação a quantidade disponível no estoque!!" +
+                                        $"\nQuantidade disponível: {ProdutoBuscaId.Quantidade} unidade(s)." +
+                                        $"\n Quantidade informada: {qtde} unidade(s).");
                 
-                ProdutoBuscaId.Quantidade = qtdeUpdate;
+                ProdutoBuscaId.Quantidade -= Math.Abs(qtde);
 
                 _dbContext.Produtos.Update(ProdutoBuscaId);
 
