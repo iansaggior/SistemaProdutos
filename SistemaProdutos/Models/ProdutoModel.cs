@@ -6,6 +6,7 @@
         public string Nome { get; set; }
         public string? Descricao { get; set; }
         public decimal Valor { get; set; }
+        public decimal Quantidade { get; set; }
         public decimal Peso { get; set; }
         public bool Inativo { get; set; }
     }

@@ -47,5 +47,19 @@ namespace SistemaProdutos.Controllers
             return Ok(inativar);
         }
 
+        [HttpPut("add/{id}&qtde={qtde}")]
+        public async Task<ActionResult<ProdutoController>> AddQuantidadeProduto(int id, decimal qtde)
+        {
+            bool addQtde = await _produtoRepositorio.AddQuantidadeProduto(id, qtde);
+            return Ok(addQtde);
+        }
+
+        [HttpPut("rem/{id}&qtde={qtde}")]
+        public async Task<ActionResult<ProdutoController>> RemovQuantidadeProduto(int id, decimal qtde)
+        {
+            bool addQtde = await _produtoRepositorio.RemovQuantidadeProduto(id, qtde);
+            return Ok(addQtde);
+        }
+
     }
 }

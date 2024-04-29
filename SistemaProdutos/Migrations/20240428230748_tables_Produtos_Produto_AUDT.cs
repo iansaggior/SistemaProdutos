@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SistemaProdutos.Migrations
 {
     /// <inheritdoc />
-    public partial class RelacionamentoTabelas : Migration
+    public partial class tables_Produtos_Produto_AUDT : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,6 +20,7 @@ namespace SistemaProdutos.Migrations
                     Nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantidade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Peso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Inativo = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
@@ -37,9 +39,11 @@ namespace SistemaProdutos.Migrations
                     Nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantidade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Peso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Inativo = table.Column<bool>(type: "bit", nullable: false),
-                    TypeAudit = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TypeAudit = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataAlteracao = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {

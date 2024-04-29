@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaProdutos.Data;
 
@@ -11,9 +12,11 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    partial class SistemaProdutosDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240428230748_tables_Produtos_Produto_AUDT")]
+    partial class tables_Produtos_Produto_AUDT
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,30 +24,6 @@ namespace SistemaProdutos.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("SistemaProdutos.Models.LogMovimentoModel", b =>
-                {
-                    b.Property<int>("MovId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovId"));
-
-                    b.Property<int?>("ProdutoId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("TextoMovimento")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("MovId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("LogMovimentos");
-                });
 
             modelBuilder.Entity("SistemaProdutos.Models.ProdutoAuditModel", b =>
                 {
@@ -72,27 +51,20 @@ namespace SistemaProdutos.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Peso")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("ProdutoId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Quantidade")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TypeAudit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Valor")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("AuditId");
 
@@ -124,43 +96,24 @@ namespace SistemaProdutos.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Peso")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Quantidade")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Valor")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProdutoId");
 
                     b.ToTable("Produtos");
                 });
 
-            modelBuilder.Entity("SistemaProdutos.Models.LogMovimentoModel", b =>
-                {
-                    b.HasOne("SistemaProdutos.Models.ProdutoModel", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produto");
-                });
-
             modelBuilder.Entity("SistemaProdutos.Models.ProdutoAuditModel", b =>
                 {
                     b.HasOne("SistemaProdutos.Models.ProdutoModel", "Produto")
                         .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProdutoId");
 
                     b.Navigation("Produto");
                 });
