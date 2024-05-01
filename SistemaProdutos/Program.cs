@@ -38,7 +38,7 @@ namespace SistemaProdutos
             builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 
             //LEO - Configurar a conexao
-            builder.Services.AddScoped<IDbConnection>(c => new SqlConnection(builder.Configuration.GetConnectionString("AppDbConnectionStrings")));
+            builder.Services.AddScoped<IDbConnection>(c => new MySqlConnection(connectionString));
 
             var app = builder.Build();
 
