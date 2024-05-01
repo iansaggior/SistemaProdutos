@@ -35,10 +35,10 @@ namespace SistemaProdutos
             var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionStrings");
             builder.Services.AddDbContext<SistemaProdutosDBContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-            builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
-
             //LEO - Configurar a conexao
             builder.Services.AddScoped<IDbConnection>(c => new MySqlConnection(connectionString));
+
+            builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 
             var app = builder.Build();
 
