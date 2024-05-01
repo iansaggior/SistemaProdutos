@@ -2,15 +2,73 @@
 using SistemaProdutos.Data;
 using SistemaProdutos.Models;
 using SistemaProdutos.Repositorios.Interfaces;
+//LEO - Adiciona a dependencia do Dapper (baixar pelo NuGet) e System.Data
+using Dapper;
+using System.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SistemaProdutos.Repositorios
 {
     public class ProdutoRepositorio : IProdutoRepositorio
     {
         private readonly SistemaProdutosDBContext _dbContext;
-        public ProdutoRepositorio(SistemaProdutosDBContext sistemaProdutosDBContext)
+
+        //LEO - adiciona o IDbConnection
+        private readonly IDbConnection _dbConnection;
+
+        //LEO - add param no construtor
+        public ProdutoRepositorio(SistemaProdutosDBContext sistemaProdutosDBContext, IDbConnection dbConnection)
         {
             _dbContext = sistemaProdutosDBContext;
+            _dbConnection = dbConnection;
+        }
+
+        public async Task<List<ProdutoModel>> TesteQuerySemParametro()
+        {
+            //StringBuilder query = new();
+
+            //query.Append($"  SELECT                                                 ");
+            //query.Append($"      {nameof(ProdutoModel.ProdutoId)} as ProdutoId,    ");
+            //query.Append($"      {nameof(ProdutoModel.Quantidade)} as Quantidade,   ");
+            //query.Append($"      {nameof(ProdutoModel.Valor)} as Valor,        ");
+            //query.Append($"      {nameof(ProdutoModel.Inativo)} as Inativo,      ");
+            //query.Append($"      {nameof(ProdutoModel.Descricao)} as Descricao     ");
+            //query.Append($"  FROM                                                   ");
+            //query.Append($"      produtos                                      ");
+
+            string query = $"SELECT * FROM Produtos ORDER BY {nameof(ProdutoModel.Nome)} ASC";
+
+            //LEO - o nome do cabeçalho deve ser o mesmo que o nome do atributo do objeto, por isso o as nameof
+
+            //var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query.ToString());
+            var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
+
+            return produtos.AsList();
+        }
+
+        public async Task<ProdutoModel> TesteQueryComParametro(int id)
+        {
+            //StringBuilder query = new();
+            //query.Append("  SELECT          ");
+            //query.Append("      *           ");
+            //query.Append("  FROM            ");
+            //query.Append("  Produtos            ");
+            //query.Append("  WHERE           ");
+            //query.Append($"      {nameof(ProdutoModel.ProdutoId)} = @id    ");
+
+            string query = $"SELECT * FROM Produtos WHERE {nameof(ProdutoModel.ProdutoId)} = @id ";
+
+            var parameters = new { id = id };
+
+            var produto = await _dbConnection.QueryFirstOrDefaultAsync<ProdutoModel>(query, parameters);
+            //var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
+
+            if (produto == null)
+                throw new Exception($"Produto com o ID '{id}' não foi encontrado no Banco de Dados");
+
+            return produto;
         }
         public async Task<ProdutoModel> BuscarProdutoPorId(int id)
         {
@@ -34,7 +92,9 @@ namespace SistemaProdutos.Repositorios
         {
             try
             {
-                return await _dbContext.Produtos.ToListAsync();
+                var produtos = await _dbContext.Produtos.ToListAsync();
+                produtos.Sort((x, y) => string.Compare(x.Nome, y.Nome, StringComparison.OrdinalIgnoreCase));
+                return produtos;
             }
             catch (Exception)
             {
