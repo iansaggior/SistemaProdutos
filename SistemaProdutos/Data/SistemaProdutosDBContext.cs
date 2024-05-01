@@ -12,7 +12,7 @@ namespace SistemaProdutos.Data
 
         public DbSet<ProdutoModel> Produtos { get; set; }
         public DbSet<ProdutoAuditModel> Produtos_AUDIT { get; set; }
-        public DbSet<LogMovimentoModel> LogMovimentos { get; set; }
+        public DbSet<LogMovimentoModel> Log_Movimentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

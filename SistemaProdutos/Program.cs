@@ -20,10 +20,15 @@ namespace SistemaProdutos
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddEntityFrameworkSqlServer().
-                AddDbContext<SistemaProdutosDBContext>(
-                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
-                );
+            // banco SQL Server
+            //builder.Services.AddEntityFrameworkSqlServer().
+            //    AddDbContext<SistemaProdutosDBContext>(
+            //        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+            //    );
+
+            //banco MySql WorkBench
+            var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionStrings");
+            builder.Services.AddDbContext<SistemaProdutosDBContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
             builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 

@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaProdutos.Data;
@@ -12,8 +11,8 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    [Migration("20240428232057_ValorPadraoCampos")]
-    partial class ValorPadraoCampos
+    [Migration("20240501044559_DataMovimentacao")]
+    partial class DataMovimentacao
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +20,34 @@ namespace SistemaProdutos.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.Entity("SistemaProdutos.Models.LogMovimentoModel", b =>
+                {
+                    b.Property<int>("MovId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataMovimentacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP")
+                        .HasDefaultValueSql("current_timestamp");
+
+                    b.Property<int?>("ProdutoId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("TextoMovimento")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("MovId");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("LogMovimentos");
+                });
 
             modelBuilder.Entity("SistemaProdutos.Models.ProdutoAuditModel", b =>
                 {
@@ -31,24 +55,22 @@ namespace SistemaProdutos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
                     b.Property<DateTime>("DataAlteracao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("TIMESTAMP")
+                        .HasDefaultValueSql("current_timestamp");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal>("Peso")
                         .ValueGeneratedOnAdd()
@@ -56,6 +78,7 @@ namespace SistemaProdutos.Migrations
                         .HasDefaultValue(0m);
 
                     b.Property<int?>("ProdutoId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Quantidade")
@@ -65,7 +88,8 @@ namespace SistemaProdutos.Migrations
 
                     b.Property<string>("TypeAudit")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<decimal>("Valor")
                         .ValueGeneratedOnAdd()
@@ -85,21 +109,19 @@ namespace SistemaProdutos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProdutoId"));
-
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Inativo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal>("Peso")
                         .ValueGeneratedOnAdd()
@@ -121,11 +143,24 @@ namespace SistemaProdutos.Migrations
                     b.ToTable("Produtos");
                 });
 
+            modelBuilder.Entity("SistemaProdutos.Models.LogMovimentoModel", b =>
+                {
+                    b.HasOne("SistemaProdutos.Models.ProdutoModel", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Produto");
+                });
+
             modelBuilder.Entity("SistemaProdutos.Models.ProdutoAuditModel", b =>
                 {
                     b.HasOne("SistemaProdutos.Models.ProdutoModel", "Produto")
                         .WithMany()
-                        .HasForeignKey("ProdutoId");
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Produto");
                 });
