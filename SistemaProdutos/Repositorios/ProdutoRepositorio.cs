@@ -2,15 +2,64 @@
 using SistemaProdutos.Data;
 using SistemaProdutos.Models;
 using SistemaProdutos.Repositorios.Interfaces;
+//LEO - Adiciona a dependencia do Dapper (baixar pelo NuGet) e System.Data
+using Dapper;
+using System.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SistemaProdutos.Repositorios
 {
     public class ProdutoRepositorio : IProdutoRepositorio
     {
         private readonly SistemaProdutosDBContext _dbContext;
-        public ProdutoRepositorio(SistemaProdutosDBContext sistemaProdutosDBContext)
+
+        //LEO - adiciona o IDbConnection
+        private readonly IDbConnection _dbConnection;
+
+        //LEO - add param no construtor
+        public ProdutoRepositorio(SistemaProdutosDBContext sistemaProdutosDBContext, IDbConnection dbConnection)
         {
             _dbContext = sistemaProdutosDBContext;
+            _dbConnection = dbConnection;
+        }
+
+        public async Task<List<ProdutoModel>> TesteQuerySemParametro()
+        {
+            StringBuilder query = new();
+
+            query.Append($"  SELECT                                                 ");
+            query.Append($"      id         as {nameof(ProdutoModel.ProdutoId)},    ");
+            query.Append($"      quantidade as {nameof(ProdutoModel.Quantidade)},   ");
+            query.Append($"      valor      as {nameof(ProdutoModel.Valor)},        ");
+            query.Append($"      inativo    as {nameof(ProdutoModel.Inativo)},      ");
+            query.Append($"      descricao  as {nameof(ProdutoModel.Descricao)}     ");
+            query.Append($"  FROM                                                   ");
+            query.Append($"      tabelaProduto                                      ");
+
+            //LEO - o nome do cabeçalho deve ser o mesmo que o nome do atributo do objeto, por isso o as nameof
+
+            var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query.ToString());
+
+            return produtos.AsList();
+        }
+
+        public async Task<ProdutoModel> TesteQueryComParametro(int id)
+        {
+            StringBuilder query = new();
+            query.Append("  SELECT          ");
+            query.Append("      *           ");
+            query.Append("  FROM            ");
+            query.Append("  WHERE           ");
+            query.Append("      id = @id    ");
+
+            var parameters = new { id = id };
+
+            var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
+
+
+            return produto;
         }
         public async Task<ProdutoModel> BuscarProdutoPorId(int id)
         {
