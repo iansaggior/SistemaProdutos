@@ -58,7 +58,7 @@ namespace SistemaProdutos.Repositorios
                 var logMovimentacao = new LogMovimentoModel
                 {
                     ProdutoId = produto.ProdutoId,
-                    TextoMovimento = $"Criação do produto {produto.ProdutoId} com {produto.Quantidade} unidades"
+                    TextoMovimento = $"Criação do produto '{produto.ProdutoId}' com {produto.Quantidade} unidades"
                 };
                 await _dbContext.LogMovimentos.AddAsync(logMovimentacao);
                 await _dbContext.SaveChangesAsync();
@@ -184,12 +184,12 @@ namespace SistemaProdutos.Repositorios
 
                 if (ProdutoBuscaId.Quantidade == 0)
                     throw new Exception($"ESTOQUE INDISPONÍVEL!!");
-                                        
+
                 if (ProdutoBuscaId.Quantidade < Math.Abs(qtde))
                     throw new Exception($"Você está tentando remover uma quantidade superior em relação a quantidade disponível no estoque!!" +
                                         $"\nQuantidade disponível: {ProdutoBuscaId.Quantidade} unidade(s)." +
                                         $"\n Quantidade informada: {qtde} unidade(s).");
-                
+
                 ProdutoBuscaId.Quantidade -= Math.Abs(qtde);
 
                 _dbContext.Produtos.Update(ProdutoBuscaId);

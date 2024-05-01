@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaProdutos.Data;
@@ -12,8 +11,8 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    [Migration("20240428235224_Migration_logMovimentos")]
-    partial class Migration_logMovimentos
+    [Migration("20240501043647_MigrationMySql")]
+    partial class MigrationMySql
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,17 +20,13 @@ namespace SistemaProdutos.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("SistemaProdutos.Models.LogMovimentoModel", b =>
                 {
                     b.Property<int>("MovId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovId"));
 
                     b.Property<int?>("ProdutoId")
                         .IsRequired()
@@ -40,7 +35,7 @@ namespace SistemaProdutos.Migrations
                     b.Property<string>("TextoMovimento")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("MovId");
 
@@ -55,24 +50,22 @@ namespace SistemaProdutos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditId"));
-
                     b.Property<DateTime>("DataAlteracao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("TIMESTAMP")
+                        .HasDefaultValueSql("current_timestamp");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal>("Peso")
                         .ValueGeneratedOnAdd()
@@ -90,7 +83,8 @@ namespace SistemaProdutos.Migrations
 
                     b.Property<string>("TypeAudit")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<decimal>("Valor")
                         .ValueGeneratedOnAdd()
@@ -110,21 +104,19 @@ namespace SistemaProdutos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProdutoId"));
-
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Inativo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal>("Peso")
                         .ValueGeneratedOnAdd()
