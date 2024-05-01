@@ -1,4 +1,6 @@
-﻿namespace SistemaProdutos.Models
+﻿using System.Globalization;
+
+namespace SistemaProdutos.Models
 {
     public class ProdutoAuditModel
     {

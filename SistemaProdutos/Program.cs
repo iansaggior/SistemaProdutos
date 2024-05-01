@@ -3,6 +3,11 @@ using SistemaProdutos.Data;
 using SistemaProdutos.Repositorios;
 using SistemaProdutos.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Builder;
+using MySqlConnector;
+
+//LEO - Add dependencia Microsoft.Data.SqlClient (baixar pelo NuGet) e System.Data
+using System.Data;
+using Microsoft.Data.SqlClient;
 
 
 namespace SistemaProdutos
@@ -20,12 +25,20 @@ namespace SistemaProdutos
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddEntityFrameworkSqlServer().
-                AddDbContext<SistemaProdutosDBContext>(
-                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
-                );
+            // banco SQL Server
+            //builder.Services.AddEntityFrameworkSqlServer().
+            //    AddDbContext<SistemaProdutosDBContext>(
+            //        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+            //    );
+
+            //banco MySql WorkBench
+            var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionStrings");
+            builder.Services.AddDbContext<SistemaProdutosDBContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
             builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
+
+            //LEO - Configurar a conexao
+            builder.Services.AddScoped<IDbConnection>(c => new MySqlConnection(connectionString));
 
             var app = builder.Build();
 

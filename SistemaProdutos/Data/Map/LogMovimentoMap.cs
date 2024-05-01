@@ -11,6 +11,7 @@ namespace SistemaProdutos.Data.Map
             builder.HasKey(x => x.MovId);
             builder.Property(x => x.TextoMovimento).HasMaxLength(100);
             builder.Property(x => x.ProdutoId).IsRequired();
+            builder.Property(x => x.DataMovimentacao).IsRequired().HasColumnType("TIMESTAMP").HasDefaultValueSql("current_timestamp");
 
             builder.HasOne(x => x.Produto);
 
