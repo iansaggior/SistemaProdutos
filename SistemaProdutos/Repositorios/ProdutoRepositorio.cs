@@ -25,76 +25,29 @@ namespace SistemaProdutos.Repositorios
             _dbConnection = dbConnection;
         }
 
-        public async Task<List<ProdutoModel>> TesteQuerySemParametro()
-        {
-            //StringBuilder query = new();
-
-            //query.Append($"  SELECT                                                 ");
-            //query.Append($"      {nameof(ProdutoModel.ProdutoId)} as ProdutoId,    ");
-            //query.Append($"      {nameof(ProdutoModel.Quantidade)} as Quantidade,   ");
-            //query.Append($"      {nameof(ProdutoModel.Valor)} as Valor,        ");
-            //query.Append($"      {nameof(ProdutoModel.Inativo)} as Inativo,      ");
-            //query.Append($"      {nameof(ProdutoModel.Descricao)} as Descricao     ");
-            //query.Append($"  FROM                                                   ");
-            //query.Append($"      produtos                                      ");
-
-            string query = $"SELECT * FROM Produtos ORDER BY {nameof(ProdutoModel.Nome)} ASC";
-
-            //LEO - o nome do cabeçalho deve ser o mesmo que o nome do atributo do objeto, por isso o as nameof
-
-            //var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query.ToString());
-            var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
-
-            return produtos.AsList();
-        }
-
-        public async Task<ProdutoModel> TesteQueryComParametro(int id)
-        {
-            //StringBuilder query = new();
-            //query.Append("  SELECT          ");
-            //query.Append("      *           ");
-            //query.Append("  FROM            ");
-            //query.Append("  Produtos            ");
-            //query.Append("  WHERE           ");
-            //query.Append($"      {nameof(ProdutoModel.ProdutoId)} = @id    ");
-
-            string query = $"SELECT * FROM Produtos WHERE {nameof(ProdutoModel.ProdutoId)} = @id ";
-
-            var parameters = new { id = id };
-
-            var produto = await _dbConnection.QueryFirstOrDefaultAsync<ProdutoModel>(query, parameters);
-            //var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
-
-            if (produto == null)
-                throw new Exception($"Produto com o ID '{id}' não foi encontrado no Banco de Dados");
-
-            return produto;
-        }
-        public async Task<ProdutoModel> BuscarProdutoPorId(int id)
-        {
-            try
-            {
-                ProdutoModel ProdutoPorId = await _dbContext.Produtos.FirstOrDefaultAsync(x => x.ProdutoId == id);
-
-                if (ProdutoPorId == null)
-                    throw new Exception($"Produto com o ID '{id}' não foi encontrado no Banco de Dados");
-
-                return ProdutoPorId;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         public async Task<List<ProdutoModel>> BuscarTodosProdutos()
         {
             try
             {
-                var produtos = await _dbContext.Produtos.ToListAsync();
-                produtos.Sort((x, y) => string.Compare(x.Nome, y.Nome, StringComparison.OrdinalIgnoreCase));
-                return produtos;
+                //StringBuilder query = new();
+
+                //query.Append($"  SELECT                                                 ");
+                //query.Append($"      {nameof(ProdutoModel.ProdutoId)} as ProdutoId,    ");
+                //query.Append($"      {nameof(ProdutoModel.Quantidade)} as Quantidade,   ");
+                //query.Append($"      {nameof(ProdutoModel.Valor)} as Valor,        ");
+                //query.Append($"      {nameof(ProdutoModel.Inativo)} as Inativo,      ");
+                //query.Append($"      {nameof(ProdutoModel.Descricao)} as Descricao     ");
+                //query.Append($"  FROM                                                   ");
+                //query.Append($"      produtos                                      ");
+
+                string query = $"SELECT * FROM Produtos ORDER BY {nameof(ProdutoModel.Nome)} ASC";
+
+                //LEO - o nome do cabeçalho deve ser o mesmo que o nome do atributo do objeto, por isso o as nameof
+
+                //var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query.ToString());
+                var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
+
+                return produtos.AsList();
             }
             catch (Exception)
             {
@@ -102,6 +55,96 @@ namespace SistemaProdutos.Repositorios
                 throw;
             }
         }
+
+        public async Task<ProdutoModel> BuscarProdutoPorId(int id)
+        {
+            try
+            {
+                //StringBuilder query = new();
+                //query.Append("  SELECT          ");
+                //query.Append("      *           ");
+                //query.Append("  FROM            ");
+                //query.Append("  Produtos            ");
+                //query.Append("  WHERE           ");
+                //query.Append($"      {nameof(ProdutoModel.ProdutoId)} = @id    ");
+
+                string query = $"SELECT * FROM Produtos WHERE {nameof(ProdutoModel.ProdutoId)} = @id ";
+
+                var parameters = new { id = id };
+
+                var produto = await _dbConnection.QueryFirstOrDefaultAsync<ProdutoModel>(query, parameters);
+                //var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
+
+                if (produto == null)
+                    throw new Exception($"Produto com o ID '{id}' não foi encontrado no Banco de Dados");
+
+                return produto;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //public async Task<ProdutoModel> BuscarProdutoPorId(int id)
+        //{
+        //    try
+        //    {
+        //        ProdutoModel ProdutoPorId = await _dbContext.Produtos.FirstOrDefaultAsync(x => x.ProdutoId == id);
+
+        //        if (ProdutoPorId == null)
+        //            throw new Exception($"Produto com o ID '{id}' não foi encontrado no Banco de Dados");
+
+        //        return ProdutoPorId;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        //public async Task<List<ProdutoModel>> BuscarTodosProdutos()
+        //{
+        //    try
+        //    {
+        //        var produtos = await _dbContext.Produtos.ToListAsync();
+        //        produtos.Sort((x, y) => string.Compare(x.Nome, y.Nome, StringComparison.OrdinalIgnoreCase));
+        //        return produtos;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        public async Task<List<ProdutoModel>> BuscarProdutoPorCoringa(string coringa)
+        {
+            try
+            {
+                coringa.ToLower();
+
+                // objetivo dessa query, é trazer todos os resultados possíveis não levando em consideração os espaços, seja no cadastro do produto, ou na busca do usuario(coriga)
+                string query = @$"SELECT * FROM produtos 
+                                WHERE REPLACE(TRIM(CONCAT(TRIM({nameof(ProdutoModel.ProdutoId)}), TRIM({nameof(ProdutoModel.Nome)}), TRIM({nameof(ProdutoModel.Descricao)}))), ' ', '')
+                                LIKE REPLACE(TRIM('%{coringa}%'), ' ', '') ";                
+
+                var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
+                //var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
+
+                if (produtos == null)
+                    throw new Exception($"Nenhum produto com a palavra chave '{coringa}' não foi encontrado no Banco de Dados");
+
+                return produtos.AsList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<ProdutoModel> AdicionarProduto(ProdutoModel produto)
         {
             try
