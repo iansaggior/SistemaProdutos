@@ -13,7 +13,5 @@ namespace SistemaProdutos.Repositorios.Interfaces
 
         Task<bool> AddQuantidadeProduto(int ProdutoId, decimal qtde);
         Task<bool> RemovQuantidadeProduto(int ProdutoId, decimal qtde);
-        //Task<List<ProdutoModel>> TesteQuerySemParametro();
-        //Task<ProdutoModel> TesteQueryComParametro(int id);
     }
 }
