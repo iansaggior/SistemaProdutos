@@ -94,28 +94,51 @@ namespace SistemaProdutos.Repositorios
         //    }
         //}
 
+        // montando a query na mão
+        //public async Task<List<ProdutoModel>> BuscarProdutoPorCoringa(string coringa)
+        //{
+        //    try
+        //    {
+        //        coringa.ToLower();
+
+        //        // objetivo dessa query, é trazer todos os resultados possíveis não levando em consideração os espaços, seja no cadastro do produto, ou na busca do usuario(coriga)
+        //        string query = @$"SELECT * FROM produtos 
+        //                        WHERE REPLACE(TRIM(CONCAT(TRIM({nameof(ProdutoModel.ProdutoId)}), TRIM({nameof(ProdutoModel.Nome)}), TRIM({nameof(ProdutoModel.Descricao)}))), ' ', '')
+        //                        LIKE REPLACE(TRIM('%{coringa}%'), ' ', '') ";
+
+        //        var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
+
+        //        if (produtos == null)
+        //            throw new Exception($"Nenhum produto com a palavra chave '{coringa}' não foi encontrado no Banco de Dados");
+
+        //        return produtos.AsList();
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        // usando o entity framework ao nosso favor
         public async Task<List<ProdutoModel>> BuscarProdutoPorCoringa(string coringa)
         {
             try
             {
-                coringa.ToLower();
+                var produtos = await _dbContext.Produtos
+                    .Where(p =>
+                        (p.ProdutoId.ToString().Trim() + p.Nome.Trim() + p.Descricao.Trim()).Replace(" ", "").ToLower()
+                            .Contains(coringa.Trim().Replace(" ", "").ToLower())
+                    )
+                    .ToListAsync();
 
-                // objetivo dessa query, é trazer todos os resultados possíveis não levando em consideração os espaços, seja no cadastro do produto, ou na busca do usuario(coriga)
-                string query = @$"SELECT * FROM produtos 
-                                WHERE REPLACE(TRIM(CONCAT(TRIM({nameof(ProdutoModel.ProdutoId)}), TRIM({nameof(ProdutoModel.Nome)}), TRIM({nameof(ProdutoModel.Descricao)}))), ' ', '')
-                                LIKE REPLACE(TRIM('%{coringa}%'), ' ', '') ";
+                if (produtos.Count == 0)
+                    throw new Exception($"Nenhum produto com a palavra chave '{coringa}' foi encontrado no Banco de Dados");
 
-                var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
-                //var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
-
-                if (produtos == null)
-                    throw new Exception($"Nenhum produto com a palavra chave '{coringa}' não foi encontrado no Banco de Dados");
-
-                return produtos.AsList();
+                return produtos;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
