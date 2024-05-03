@@ -5,10 +5,6 @@ using SistemaProdutos.Repositorios.Interfaces;
 //LEO - Adiciona a dependencia do Dapper (baixar pelo NuGet) e System.Data
 using Dapper;
 using System.Data;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SistemaProdutos.Repositorios
 {
