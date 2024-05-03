@@ -8,17 +8,15 @@ using System.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SistemaProdutos.Repositorios
 {
     public class ProdutoRepositorio : IProdutoRepositorio
     {
         private readonly SistemaProdutosDBContext _dbContext;
-
-        //LEO - adiciona o IDbConnection
         private readonly IDbConnection _dbConnection;
 
-        //LEO - add param no construtor
         public ProdutoRepositorio(SistemaProdutosDBContext sistemaProdutosDBContext, IDbConnection dbConnection)
         {
             _dbContext = sistemaProdutosDBContext;
@@ -29,22 +27,8 @@ namespace SistemaProdutos.Repositorios
         {
             try
             {
-                //StringBuilder query = new();
-
-                //query.Append($"  SELECT                                                 ");
-                //query.Append($"      {nameof(ProdutoModel.ProdutoId)} as ProdutoId,    ");
-                //query.Append($"      {nameof(ProdutoModel.Quantidade)} as Quantidade,   ");
-                //query.Append($"      {nameof(ProdutoModel.Valor)} as Valor,        ");
-                //query.Append($"      {nameof(ProdutoModel.Inativo)} as Inativo,      ");
-                //query.Append($"      {nameof(ProdutoModel.Descricao)} as Descricao     ");
-                //query.Append($"  FROM                                                   ");
-                //query.Append($"      produtos                                      ");
-
                 string query = $"SELECT * FROM Produtos ORDER BY {nameof(ProdutoModel.Nome)} ASC";
 
-                //LEO - o nome do cabeçalho deve ser o mesmo que o nome do atributo do objeto, por isso o as nameof
-
-                //var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query.ToString());
                 var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
 
                 return produtos.AsList();
@@ -60,20 +44,11 @@ namespace SistemaProdutos.Repositorios
         {
             try
             {
-                //StringBuilder query = new();
-                //query.Append("  SELECT          ");
-                //query.Append("      *           ");
-                //query.Append("  FROM            ");
-                //query.Append("  Produtos            ");
-                //query.Append("  WHERE           ");
-                //query.Append($"      {nameof(ProdutoModel.ProdutoId)} = @id    ");
-
                 string query = $"SELECT * FROM Produtos WHERE {nameof(ProdutoModel.ProdutoId)} = @id ";
 
                 var parameters = new { id = id };
 
                 var produto = await _dbConnection.QueryFirstOrDefaultAsync<ProdutoModel>(query, parameters);
-                //var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
 
                 if (produto == null)
                     throw new Exception($"Produto com o ID '{id}' não foi encontrado no Banco de Dados");
@@ -128,7 +103,7 @@ namespace SistemaProdutos.Repositorios
                 // objetivo dessa query, é trazer todos os resultados possíveis não levando em consideração os espaços, seja no cadastro do produto, ou na busca do usuario(coriga)
                 string query = @$"SELECT * FROM produtos 
                                 WHERE REPLACE(TRIM(CONCAT(TRIM({nameof(ProdutoModel.ProdutoId)}), TRIM({nameof(ProdutoModel.Nome)}), TRIM({nameof(ProdutoModel.Descricao)}))), ' ', '')
-                                LIKE REPLACE(TRIM('%{coringa}%'), ' ', '') ";                
+                                LIKE REPLACE(TRIM('%{coringa}%'), ' ', '') ";
 
                 var produtos = await _dbConnection.QueryAsync<ProdutoModel>(query);
                 //var produto = await _dbConnection.QueryFirstAsync<ProdutoModel>(query.ToString(), parameters);
@@ -137,6 +112,64 @@ namespace SistemaProdutos.Repositorios
                     throw new Exception($"Nenhum produto com a palavra chave '{coringa}' não foi encontrado no Banco de Dados");
 
                 return produtos.AsList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal)
+        {
+            try
+            {
+                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos;
+
+                if (dtInicio == dtFinal)
+                {
+                    query = query.Where(x => x.DataMovimentacao.Date == dtInicio.Date);
+                }
+                else
+                {
+                    query = query.Where(x => x.DataMovimentacao.Date >= dtInicio.Date && x.DataMovimentacao.Date <= dtFinal.Date);
+                }
+
+                var logMovimentos = await query
+                    .Include(x => x.Produto)
+                    .OrderByDescending(x => x.DataMovimentacao)
+                    .ToListAsync();
+
+                return logMovimentos;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, int id)
+        {
+            try
+            {
+                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos;
+
+                if (dtInicio == dtFinal)
+                {
+                    query = query.Where(x => x.DataMovimentacao.Date == dtInicio.Date && x.ProdutoId == id);
+                }
+                else
+                {
+                    query = query.Where(x => x.DataMovimentacao.Date >= dtInicio.Date && x.DataMovimentacao.Date <= dtFinal.Date && x.ProdutoId == id);
+                }
+
+                var logMovimentos = await query
+                    .Include(x => x.Produto)
+                    .OrderByDescending(x => x.DataMovimentacao)
+                    .ToListAsync();
+
+                return logMovimentos;
             }
             catch (Exception)
             {
