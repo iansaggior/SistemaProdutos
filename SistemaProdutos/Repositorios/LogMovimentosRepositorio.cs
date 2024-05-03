@@ -41,7 +41,6 @@ namespace SistemaProdutos.Repositorios
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -70,7 +69,6 @@ namespace SistemaProdutos.Repositorios
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

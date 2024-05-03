@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaProdutos.Models;
 using SistemaProdutos.Repositorios.Interfaces;
+using System.Globalization;
 
 namespace SistemaProdutos.Controllers
 {
@@ -16,19 +17,45 @@ namespace SistemaProdutos.Controllers
         }
 
 
-        [Route("logMovimentos/{dataInicio:datetime}/{dataFinal:datetime}")]
+        [Route("{dataInicio:datetime}/{dataFinal:datetime}")]
         [HttpGet]
-        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoes(DateTime dataInicial, DateTime dataFinal)
+        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoes(string dataInicio, string dataFinal)
         {
-            List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(dataInicial, dataFinal);
+            DateTime dtInicio;
+            DateTime dtFinal;
+
+            if (!DateTime.TryParseExact(dataInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtInicio))
+            {
+                return BadRequest("Formato inválido para a data de início!! \nFormato esperado: 'yyyy-MM-dd'.");
+            }
+
+            if (!DateTime.TryParseExact(dataFinal, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFinal))
+            {
+                return BadRequest("Formato inválido para a data final!! \nFormato esperado: 'yyyy-MM-dd'.");
+            }
+
+            List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(dtInicio, dtFinal);
             return Ok(logMovimentos);
         }
 
-        [Route("logMovimentos/{dataInicio:datetime}/{dataFinal:datetime}/id={id}")]
+        [Route("{dataInicio:datetime}/{dataFinal:datetime}/id={id}")]
         [HttpGet]
-        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoesPorProduto(DateTime dataInicial, DateTime dataFinal, int id)
+        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoesPorProduto(string dataInicio, string dataFinal, int id)
         {
-            List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(dataInicial, dataFinal, id);
+            DateTime dtInicio;
+            DateTime dtFinal;
+
+            if (!DateTime.TryParseExact(dataInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtInicio))
+            {
+                return BadRequest("Formato inválido para a data de início!! \nFormato esperado: 'yyyy-MM-dd'.");
+            }
+
+            if (!DateTime.TryParseExact(dataFinal, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFinal))
+            {
+                return BadRequest("Formato inválido para a data final!! \nFormato esperado: 'yyyy-MM-dd'.");
+            }
+
+            List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(dtInicio, dtFinal, id);
             return Ok(logMovimentos);
         }
     }
