@@ -120,64 +120,6 @@ namespace SistemaProdutos.Repositorios
             }
         }
 
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal)
-        {
-            try
-            {
-                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos;
-
-                if (dtInicio == dtFinal)
-                {
-                    query = query.Where(x => x.DataMovimentacao.Date == dtInicio.Date);
-                }
-                else
-                {
-                    query = query.Where(x => x.DataMovimentacao.Date >= dtInicio.Date && x.DataMovimentacao.Date <= dtFinal.Date);
-                }
-
-                var logMovimentos = await query
-                    .Include(x => x.Produto)
-                    .OrderByDescending(x => x.DataMovimentacao)
-                    .ToListAsync();
-
-                return logMovimentos;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, int id)
-        {
-            try
-            {
-                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos;
-
-                if (dtInicio == dtFinal)
-                {
-                    query = query.Where(x => x.DataMovimentacao.Date == dtInicio.Date && x.ProdutoId == id);
-                }
-                else
-                {
-                    query = query.Where(x => x.DataMovimentacao.Date >= dtInicio.Date && x.DataMovimentacao.Date <= dtFinal.Date && x.ProdutoId == id);
-                }
-
-                var logMovimentos = await query
-                    .Include(x => x.Produto)
-                    .OrderByDescending(x => x.DataMovimentacao)
-                    .ToListAsync();
-
-                return logMovimentos;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         public async Task<ProdutoModel> AdicionarProduto(ProdutoModel produto)
         {
             try
