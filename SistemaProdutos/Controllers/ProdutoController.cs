@@ -51,6 +51,13 @@ namespace SistemaProdutos.Controllers
             List<LogMovimentoModel> produtos = await _produtoRepositorio.UltimasMovimentacoes(dataInicial, dataFinal);
             return Ok(produtos);
         }
+
+        [Route("logMovimentos/{dataInicio:datetime}/{dataFinal:datetime}/id={id}")]
+        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoesPorProduto(DateTime dataInicial, DateTime dataFinal, int id)
+        {
+            List<LogMovimentoModel> produtos = await _produtoRepositorio.UltimasMovimentacoes(dataInicial, dataFinal, id);
+            return Ok(produtos);
+        }
         [HttpPost]
         public async Task<ActionResult<ProdutoController>> CadastrarProduto([FromBody] ProdutoModel produtoModel)
         {
