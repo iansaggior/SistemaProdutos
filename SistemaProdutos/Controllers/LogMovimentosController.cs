@@ -17,6 +17,12 @@ namespace SistemaProdutos.Controllers
         }
 
 
+        [HttpGet]
+        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoes()
+        {
+            List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes();
+            return Ok(logMovimentos);
+        }
         [Route("{dataInicio:datetime}/{dataFinal:datetime}")]
         [HttpGet]
         public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoes(string dataInicio, string dataFinal)
@@ -33,6 +39,8 @@ namespace SistemaProdutos.Controllers
             {
                 return BadRequest("Formato inválido para a data final!! \nFormato esperado: 'yyyy-MM-dd'.");
             }
+            if (dtFinal < dtInicio)
+                return BadRequest("Data final menor que data inicial. Favor revisar os parametros");
 
             List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(dtInicio, dtFinal);
             return Ok(logMovimentos);
@@ -54,6 +62,9 @@ namespace SistemaProdutos.Controllers
             {
                 return BadRequest("Formato inválido para a data final!! \nFormato esperado: 'yyyy-MM-dd'.");
             }
+
+            if (dtFinal < dtInicio)
+                return BadRequest("Data final menor que data inicial. Favor revisar os parametros");
 
             List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(dtInicio, dtFinal, id);
             return Ok(logMovimentos);

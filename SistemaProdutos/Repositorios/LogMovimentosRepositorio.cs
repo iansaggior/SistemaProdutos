@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SistemaProdutos.Data;
 using SistemaProdutos.Models;
 using SistemaProdutos.Repositorios.Interfaces;
@@ -15,6 +16,42 @@ namespace SistemaProdutos.Repositorios
         {
             _dbContext = sistemaProdutosDBContext;
             _dbConnection = dbConnection;
+        }
+
+        public Task<List<LogMovimentoModel>> UltimasMovimentacoes(string type)
+        {
+            throw new NotImplementedException();
+        }
+        //public Task<List<LogMovimentoModel>> UltimasMovimentacoes(string type)
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes()
+        {
+            try
+            {
+                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos.
+                                                        Include(x => x.Produto).
+                                                        OrderByDescending(x => x.MovId);
+
+                var logMovimentos = await query.ToListAsync();
+
+                return logMovimentos;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal)
