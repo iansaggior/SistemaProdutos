@@ -18,30 +18,18 @@ namespace SistemaProdutos.Repositorios
             _dbConnection = dbConnection;
         }
 
-        public Task<List<LogMovimentoModel>> UltimasMovimentacoes(string type)
-        {
-            throw new NotImplementedException();
-        }
-        //public Task<List<LogMovimentoModel>> UltimasMovimentacoes(string type)
-        //{
-        //    try
-        //    {
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes()
+        // ADIÇÃO -> ADI
+        // REMOÇÃO -> REM
+        // CRIAÇÃO -> CRIA
+        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(string type)
         {
             try
             {
-                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos.
-                                                        Include(x => x.Produto).
-                                                        OrderByDescending(x => x.MovId);
+                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos;
+
+                query = query.Where(x => x.TextoMovimento.Contains(type.Substring(0,3))).
+                                Include(x => x.Produto).
+                                OrderByDescending(x => x.MovId);
 
                 var logMovimentos = await query.ToListAsync();
 
@@ -49,7 +37,49 @@ namespace SistemaProdutos.Repositorios
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+        public Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, string type)
+        {
+            throw new NotImplementedException();
+        }
 
+        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(int id)
+        {
+            try
+            {
+                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos;
+
+                query = query.Where(x => x.ProdutoId == id).
+                                Include(x => x.Produto).
+                                OrderByDescending(x => x.MovId);
+
+                var logMovimentos = await query.ToListAsync();
+
+                return logMovimentos;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes()
+        {
+            try
+            {
+                IQueryable<LogMovimentoModel> query = _dbContext.Log_Movimentos;
+
+                query = query.Include(x => x.Produto).
+                    OrderByDescending(x => x.MovId);
+
+                var logMovimentos = await query.ToListAsync();
+
+                return logMovimentos;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
@@ -109,5 +139,6 @@ namespace SistemaProdutos.Repositorios
                 throw;
             }
         }
+
     }
 }
