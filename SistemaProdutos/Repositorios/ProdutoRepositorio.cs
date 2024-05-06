@@ -143,6 +143,9 @@ namespace SistemaProdutos.Repositorios
         {
             try
             {
+                if (produto.Inativo == null)
+                    produto.Inativo = false;
+
                 await _dbContext.Produtos.AddAsync(produto);
                 await _dbContext.SaveChangesAsync();
 
