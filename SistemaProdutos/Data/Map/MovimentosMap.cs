@@ -9,8 +9,8 @@ namespace SistemaProdutos.Data.Map
         public void Configure(EntityTypeBuilder<MovimentacaoModel> builder)
         {
             builder.ToView("View_Movimentacoes");
-            builder.HasKey(x => x.ProdutoId);
-            builder.HasOne(x => x.Produto).WithMany().HasForeignKey(x => x.ProdutoId);
+            builder.HasKey(x => x.AuditId);
+            builder.HasOne(x => x.Produto);//.WithMany().HasForeignKey(x => x.ProdutoId);
 
         }
     }

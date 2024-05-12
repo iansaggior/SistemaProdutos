@@ -5,7 +5,7 @@
 namespace SistemaProdutos.Migrations
 {
     /// <inheritdoc />
-    public partial class testecriacaoview : Migration
+    public partial class view_movimentos : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,15 +71,18 @@ namespace SistemaProdutos.Migrations
                 WHERE
                     ((addo.TypeAudit = 'ADD')
                         AND (addo.Quantidade > 0))
-                ORDER BY DataAlteracao DESC;
+                ORDER BY AuditId DESC;
     ");
-
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP VIEW IF EXISTS View_Movimentacoes;");
+            migrationBuilder.Sql("DROP VIEW View_Movimentacoes;");
         }
+
+
+
     }
+
 }

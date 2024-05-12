@@ -15,10 +15,7 @@ namespace SistemaProdutos.Models
         public string TypeAudit { get; set; }
         public DateTime DataAlteracao { get; set; }
         public virtual ProdutoModel? Produto { get; set; }
-        public ProdutoAuditModel()
-        {
-            
-        }
+        public ProdutoAuditModel() {}
         public ProdutoAuditModel(ProdutoModel produto, bool existe)
         {
             ProdutoId = produto.ProdutoId;

@@ -4,6 +4,8 @@ namespace SistemaProdutos.Models
 {
     public class MovimentacaoModel
     {
+        [Column("AuditId")]
+        public int AuditId { get; set; }
         [Column("QuantidadeNew")]
         public decimal QuantidadeNew { get; set; }
         [Column("QuantidadeOld")]
