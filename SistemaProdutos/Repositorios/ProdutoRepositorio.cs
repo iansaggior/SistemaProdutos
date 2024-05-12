@@ -155,12 +155,6 @@ namespace SistemaProdutos.Repositorios
 
                 await _dbContext.SaveChangesAsync();
 
-                var logMovimentacao = new LogMovimentoModel
-                {
-                    ProdutoId = produto.ProdutoId,
-                    TextoMovimento = $"Criação do produto '{produto.ProdutoId}' com {produto.Quantidade} unidades"
-                };
-                await _dbContext.Log_Movimentos.AddAsync(logMovimentacao);
                 await _dbContext.SaveChangesAsync();
 
                 return produto;
@@ -257,12 +251,6 @@ namespace SistemaProdutos.Repositorios
                 };
                 await _dbContext.Produtos_AUDIT.AddAsync(prodAudt);
 
-                var logMovimentacao = new LogMovimentoModel
-                {
-                    ProdutoId = ProdutoBuscaId.ProdutoId,
-                    TextoMovimento = $"Adição de {qtde} unidade(s) do produto '{ProdutoBuscaId.ProdutoId}' no estoque. Total atualizado para {ProdutoBuscaId.Quantidade} unidade(s)"
-                };
-                await _dbContext.Log_Movimentos.AddAsync(logMovimentacao);
                 await _dbContext.SaveChangesAsync();
 
                 return true;
@@ -300,12 +288,6 @@ namespace SistemaProdutos.Repositorios
                 };
                 await _dbContext.Produtos_AUDIT.AddAsync(prodAudt);
 
-                var logMovimentacao = new LogMovimentoModel
-                {
-                    ProdutoId = ProdutoBuscaId.ProdutoId,
-                    TextoMovimento = $"Remoção de {qtde} unidade(s) do produto '{ProdutoBuscaId.ProdutoId}' no estoque. Total atualizado para {ProdutoBuscaId.Quantidade} unidade(s)"
-                };
-                await _dbContext.Log_Movimentos.AddAsync(logMovimentacao);
                 await _dbContext.SaveChangesAsync();
 
                 return true;

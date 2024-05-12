@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaProdutos.Data;
 
@@ -10,9 +11,11 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    partial class SistemaProdutosDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240512040930_nome_daMigration")]
+    partial class nome_daMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,9 +51,9 @@ namespace SistemaProdutos.Migrations
 
             modelBuilder.Entity("SistemaProdutos.Models.MovimentacaoModel", b =>
                 {
-                    b.Property<int>("AuditId")
+                    b.Property<int?>("ProdutoId")
                         .HasColumnType("int")
-                        .HasColumnName("AuditId");
+                        .HasColumnName("ProdutoId");
 
                     b.Property<DateTime>("DataAlteracao")
                         .HasColumnType("datetime(6)")
@@ -59,10 +62,6 @@ namespace SistemaProdutos.Migrations
                     b.Property<int>("DiferencaQuantidade")
                         .HasColumnType("int")
                         .HasColumnName("DiferencaQuantidade");
-
-                    b.Property<int?>("ProdutoId")
-                        .HasColumnType("int")
-                        .HasColumnName("ProdutoId");
 
                     b.Property<decimal>("QuantidadeNew")
                         .HasColumnType("decimal(65,30)")
@@ -82,9 +81,7 @@ namespace SistemaProdutos.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("TipoAlteracao");
 
-                    b.HasKey("AuditId");
-
-                    b.HasIndex("ProdutoId");
+                    b.HasKey("ProdutoId");
 
                     b.ToTable((string)null);
 
@@ -200,7 +197,9 @@ namespace SistemaProdutos.Migrations
                 {
                     b.HasOne("SistemaProdutos.Models.ProdutoModel", "Produto")
                         .WithMany()
-                        .HasForeignKey("ProdutoId");
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Produto");
                 });

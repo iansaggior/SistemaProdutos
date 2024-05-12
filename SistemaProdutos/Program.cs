@@ -39,7 +39,8 @@ namespace SistemaProdutos
             builder.Services.AddScoped<IDbConnection>(c => new MySqlConnection(connectionString));
 
             builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
-            builder.Services.AddScoped<ILogMovimentosRepositorio, LogMovimentosRepositorio>();
+            //builder.Services.AddScoped<ILogMovimentosRepositorio, LogMovimentosRepositorio>();
+            builder.Services.AddScoped<IMovimentosRepositorio, MovimentosRepositorio>();
 
             var app = builder.Build();
 
