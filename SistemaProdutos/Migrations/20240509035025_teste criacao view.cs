@@ -12,7 +12,7 @@ namespace SistemaProdutos.Migrations
         {
             migrationBuilder.Sql(@"
     
-create VIEW View_Movimentacoes_add_Criar_teste AS
+create VIEW View_Movimentacoes AS
 SELECT
     new.produtoId AS ProdutoId,
     new.quantidade AS QuantidadeNew,
@@ -57,7 +57,7 @@ SELECT
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP VIEW IF EXISTS View_Movimentacoes_add_Criar_teste;");
+            migrationBuilder.Sql("DROP VIEW IF EXISTS View_Movimentacoes;");
         }
     }
 }

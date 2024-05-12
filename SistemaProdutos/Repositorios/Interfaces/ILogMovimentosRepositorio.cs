@@ -12,6 +12,7 @@ namespace SistemaProdutos.Repositorios.Interfaces
         Task<List<LogMovimentoModel>> UltimasMovimentacoes(int id);
         Task<List<LogMovimentoModel>> UltimasMovimentacoes(int id, string type);
         Task<List<LogMovimentoModel>> UltimasMovimentacoes();
+        Task<List<MovimentacaoModel>> TesteMovimentos_View();
 
     }
 }

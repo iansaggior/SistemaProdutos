@@ -37,6 +37,20 @@ namespace SistemaProdutos.Repositorios
         //        throw;
         //    }
         //}
+        public async Task<List<MovimentacaoModel>> TesteMovimentos_View()
+        {
+            try
+            {
+                var movimentos = await _dbContext.Movimentos.Include(x => x.Produto).ToListAsync();
+
+                return movimentos;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public async Task<List<LogMovimentoModel>> UltimasMovimentacoes()
         {
             try

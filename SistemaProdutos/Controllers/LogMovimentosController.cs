@@ -29,8 +29,15 @@ namespace SistemaProdutos.Controllers
             return true;
         }
 
+        [HttpGet("TesteView")]
+        public async Task<ActionResult<List<LogMovimentosController>>> TesteMovimentcoes_view()
+        {
+            List<MovimentacaoModel> logMovimentos = await _logMovimentosRepositorio.TesteMovimentos_View();
+            return Ok(logMovimentos);
+        }
+
         [HttpGet]
-        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoes()
+        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoes()
         {
             List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes();
             return Ok(logMovimentos);
