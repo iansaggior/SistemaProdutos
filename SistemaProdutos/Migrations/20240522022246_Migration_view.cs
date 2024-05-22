@@ -5,7 +5,7 @@
 namespace SistemaProdutos.Migrations
 {
     /// <inheritdoc />
-    public partial class view_movimentos : Migration
+    public partial class Migration_view : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,9 +80,5 @@ namespace SistemaProdutos.Migrations
         {
             migrationBuilder.Sql("DROP VIEW View_Movimentacoes;");
         }
-
-
-
     }
-
 }

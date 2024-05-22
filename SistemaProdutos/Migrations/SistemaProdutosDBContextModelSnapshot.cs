@@ -19,33 +19,6 @@ namespace SistemaProdutos.Migrations
                 .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("SistemaProdutos.Models.LogMovimentoModel", b =>
-                {
-                    b.Property<int>("MovId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataMovimentacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TIMESTAMP")
-                        .HasDefaultValueSql("current_timestamp");
-
-                    b.Property<int?>("ProdutoId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("TextoMovimento")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.HasKey("MovId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("Log_Movimentos");
-                });
-
             modelBuilder.Entity("SistemaProdutos.Models.MovimentacaoModel", b =>
                 {
                     b.Property<int>("AuditId")
@@ -183,17 +156,6 @@ namespace SistemaProdutos.Migrations
                     b.HasKey("ProdutoId");
 
                     b.ToTable("Produtos");
-                });
-
-            modelBuilder.Entity("SistemaProdutos.Models.LogMovimentoModel", b =>
-                {
-                    b.HasOne("SistemaProdutos.Models.ProdutoModel", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("SistemaProdutos.Models.MovimentacaoModel", b =>
