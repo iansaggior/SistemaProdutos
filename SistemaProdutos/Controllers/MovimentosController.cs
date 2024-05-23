@@ -96,7 +96,7 @@ namespace SistemaProdutos.Controllers
             return Ok(logMovimentos);
         }
 
-        [Route("{dataInicio:datetime}/{dataFinal:datetime}/type={id}")]
+        [Route("{dataInicio:datetime}/{dataFinal:datetime}/type={type}")]
         [HttpGet]
         public async Task<ActionResult<List<MovimentosController>>> UltimasMovimentacoesPorDataTipo(string dataInicio, string dataFinal, string type)
         {
