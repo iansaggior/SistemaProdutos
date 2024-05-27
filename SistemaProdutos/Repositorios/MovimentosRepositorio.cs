@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SistemaProdutos.Data;
 using SistemaProdutos.Models;
 using SistemaProdutos.Repositorios.Interfaces;
@@ -8,12 +9,12 @@ using System.Data;
 
 namespace SistemaProdutos.Repositorios
 {
-    public class LogMovimentosRepositorio : ILogMovimentosRepositorio
+    public class MovimentosRepositorio : IMovimentosRepositorio
     {
         private readonly SistemaProdutosDBContext _dbContext;
         private readonly IDbConnection _dbConnection;
 
-        public LogMovimentosRepositorio(SistemaProdutosDBContext sistemaProdutosDBContext, IDbConnection dbConnection)
+        public MovimentosRepositorio(SistemaProdutosDBContext sistemaProdutosDBContext, IDbConnection dbConnection)
         {
             _dbContext = sistemaProdutosDBContext;
             _dbConnection = dbConnection;
@@ -37,30 +38,48 @@ namespace SistemaProdutos.Repositorios
         //        throw;
         //    }
         //}
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes()
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes()
         {
             try
             {
-                var logMovimentos = await _dbContext.Log_Movimentos.Include(x => x.Produto).
-                                                                    OrderByDescending(x => x.MovId).
-                                                                    ToListAsync();
-                return logMovimentos;
+                var movimentos = await _dbContext.Movimentos.Include(x => x.Produto).OrderByDescending(x => x.AuditId).ToListAsync();
+
+                return movimentos;
             }
             catch (Exception)
             {
+
                 throw;
             }
         }
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal)
+
+        //public async Task<List<MovimentacaoModel>> UltimasMovimentacoes()
+        //{
+        //    try
+        //    {
+        //        string query = $"SELECT * FROM View_Movimentacoes";
+
+        //        var movimentos = await _dbConnection.QueryAsync<MovimentacaoModel>(query);
+
+        //        return movimentos.AsList();
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal)
         {
             try
             {
                 var logMovimentos = await UltimasMovimentacoes();
 
                 if (dtInicio == dtFinal)
-                    logMovimentos = logMovimentos.Where(x => x.DataMovimentacao.Date == dtInicio.Date).ToList();
+                    logMovimentos = logMovimentos.Where(x => x.DataAlteracao.Date == dtInicio.Date).ToList();
                 else
-                    logMovimentos = logMovimentos.Where(x => x.DataMovimentacao.Date >= dtInicio.Date && x.DataMovimentacao.Date <= dtFinal.Date).ToList();
+                    logMovimentos = logMovimentos.Where(x => x.DataAlteracao.Date >= dtInicio.Date && x.DataAlteracao.Date <= dtFinal.Date).ToList();
 
                 return logMovimentos;
             }
@@ -70,20 +89,17 @@ namespace SistemaProdutos.Repositorios
             }
         }
 
-        // ADIÇÃO -> ADI
-        // REMOÇÃO -> REM
-        // CRIAÇÃO -> CRIA
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(string type)
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes(string type)
         {
             try
             {
-                type = type.ToLower();
+                if (type.IsNullOrEmpty())
+                    throw new Exception("Informe o tipo de movimentação");
+
+                type = type.ToUpper();
                 var logMovimentos = await UltimasMovimentacoes();
 
-                if (type.Substring(0, 3) == "cri" || type.Substring(0, 3) == "adi")
-                    logMovimentos = logMovimentos.Where(x => x.TextoMovimento.Substring(0, 3).ToLower() == "cri" || x.TextoMovimento.Substring(0, 3).ToLower() == "adi").ToList();
-                else
-                    logMovimentos = logMovimentos.Where(x => x.TextoMovimento.Substring(0, 3).ToLower() == "rem").ToList();
+                logMovimentos = (List<MovimentacaoModel>)logMovimentos.Where(x => x.TipoAlteracao == type).ToList();
 
                 return logMovimentos;
             }
@@ -94,20 +110,22 @@ namespace SistemaProdutos.Repositorios
         }
 
 
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, string type)
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, string type)
         {
             type = type.ToLower();
             var logMovimentos = await UltimasMovimentacoes(dtInicio, dtFinal);
 
-            if (type.Substring(0, 3) == "cri" || type.Substring(0, 3) == "adi")
-                logMovimentos = logMovimentos.Where(x => x.TextoMovimento.Substring(0, 3).ToLower() == "cri" || x.TextoMovimento.Substring(0, 3).ToLower() == "adi").ToList();
-            else
-                logMovimentos = logMovimentos.Where(x => x.TextoMovimento.Substring(0, 3).ToLower() == "rem").ToList();
+            if (type.IsNullOrEmpty())
+                throw new Exception("Informe o tipo de movimentação");
+
+            type = type.ToUpper();
+
+            logMovimentos = (List<MovimentacaoModel>)logMovimentos.Where(x => x.TipoAlteracao == type).ToList();
 
             return logMovimentos;
         }
 
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, int id)
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, int id)
         {
             try
             {
@@ -120,18 +138,18 @@ namespace SistemaProdutos.Repositorios
                 throw;
             }
         }
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, int id, string type)
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes(DateTime dtInicio, DateTime dtFinal, int id, string type)
         {
             var logMovimentos = await UltimasMovimentacoes(dtInicio, dtFinal, type);
 
             return logMovimentos.Where(x => x.ProdutoId == id).ToList();
         }
 
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(int id)
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes(int id)
         {
             try
             {
-                List<LogMovimentoModel> logMovimentos = await UltimasMovimentacoes();
+                List<MovimentacaoModel> logMovimentos = await UltimasMovimentacoes();
 
                 return logMovimentos.Where(x => x.ProdutoId == id).ToList();
             }
@@ -140,11 +158,11 @@ namespace SistemaProdutos.Repositorios
                 throw;
             }
         }
-        public async Task<List<LogMovimentoModel>> UltimasMovimentacoes(int id, string type)
+        public async Task<List<MovimentacaoModel>> UltimasMovimentacoes(int id, string type)
         {
             try
             {
-                List<LogMovimentoModel> logMovimentos = await UltimasMovimentacoes(type);
+                List<MovimentacaoModel> logMovimentos = await UltimasMovimentacoes(type);
 
                 return logMovimentos.Where(x => x.ProdutoId == id).ToList();
             }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SistemaProdutos.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationMySql : Migration
+    public partial class Migration_definitiva : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,28 +33,6 @@ namespace SistemaProdutos.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Produtos", x => x.ProdutoId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "LogMovimentos",
-                columns: table => new
-                {
-                    MovId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TextoMovimento = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProdutoId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LogMovimentos", x => x.MovId);
-                    table.ForeignKey(
-                        name: "FK_LogMovimentos_Produtos_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "Produtos",
-                        principalColumn: "ProdutoId",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -90,11 +68,6 @@ namespace SistemaProdutos.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LogMovimentos_ProdutoId",
-                table: "LogMovimentos",
-                column: "ProdutoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Produtos_AUDIT_ProdutoId",
                 table: "Produtos_AUDIT",
                 column: "ProdutoId");
@@ -103,9 +76,6 @@ namespace SistemaProdutos.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "LogMovimentos");
-
             migrationBuilder.DropTable(
                 name: "Produtos_AUDIT");
 
