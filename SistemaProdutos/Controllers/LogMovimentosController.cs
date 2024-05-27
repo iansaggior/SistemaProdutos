@@ -30,28 +30,28 @@ namespace SistemaProdutos.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProdutoController>>> UltimasMovimentacoes()
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoes()
         {
             List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes();
             return Ok(logMovimentos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoesPorProdutoId(int id)
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoesPorProdutoId(int id)
         {
             List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(id);
             return Ok(logMovimentos);
         }
 
         [HttpGet("type={type}")]
-        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoesPorType(string type)
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoesPorType(string type)
         {
             List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(type);
             return Ok(logMovimentos);
         }
 
         [HttpGet("id={id}/type={type}")]
-        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoesPorProdutoIdType(int id, string type)
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoesPorProdutoIdType(int id, string type)
         {
             List<LogMovimentoModel> logMovimentos = await _logMovimentosRepositorio.UltimasMovimentacoes(id, type);
             return Ok(logMovimentos);
@@ -59,7 +59,7 @@ namespace SistemaProdutos.Controllers
 
         [Route("{dataInicio:datetime}/{dataFinal:datetime}")]
         [HttpGet]
-        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoesPorData(string dataInicio, string dataFinal)
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoesPorData(string dataInicio, string dataFinal)
         {
             DateTime dtInicio;
             DateTime dtFinal;
@@ -72,7 +72,7 @@ namespace SistemaProdutos.Controllers
 
         [Route("{dataInicio:datetime}/{dataFinal:datetime}/id={id}")]
         [HttpGet]
-        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoesPorProdutoIdData(string dataInicio, string dataFinal, int id)
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoesPorProdutoIdData(string dataInicio, string dataFinal, int id)
         {
             DateTime dtInicio;
             DateTime dtFinal;
@@ -85,7 +85,7 @@ namespace SistemaProdutos.Controllers
 
         [Route("{dataInicio:datetime}/{dataFinal:datetime}/id={id}/type={type}")]
         [HttpGet]
-        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoesPorProdutoDataTipo(string dataInicio, string dataFinal, int id, string type)
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoesPorProdutoDataTipo(string dataInicio, string dataFinal, int id, string type)
         {
             DateTime dtInicio;
             DateTime dtFinal;
@@ -98,7 +98,7 @@ namespace SistemaProdutos.Controllers
 
         [Route("{dataInicio:datetime}/{dataFinal:datetime}/type={id}")]
         [HttpGet]
-        public async Task<ActionResult<List<LogMovimentosController>>> UltimasMovimentacoesPorDataTipo(string dataInicio, string dataFinal, string type)
+        public async Task<ActionResult<List<LogMovimentoModel>>> UltimasMovimentacoesPorDataTipo(string dataInicio, string dataFinal, string type)
         {
             DateTime dtInicio;
             DateTime dtFinal;
