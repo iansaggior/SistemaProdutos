@@ -21,24 +21,12 @@ namespace SistemaProdutos.Controllers
             List<ProdutoModel> produtos = await _produtoRepositorio.BuscarTodosProdutos();
             return Ok(produtos);
         }
-        //[HttpGet("teste")]
-        //public async Task<ActionResult<List<ProdutoModel>>> TesteQuerySemParametro()
-        //{
-        //    List<ProdutoModel> produtos = await _produtoRepositorio.TesteQuerySemParametro();
-        //    return Ok(produtos);
-        //}
         [HttpGet("{id}")]
         public async Task<ActionResult<ProdutoModel>> BuscarPorId(int id)
         {
             ProdutoModel produto = await _produtoRepositorio.BuscarProdutoPorId(id);
             return Ok(produto);
         }
-        //[HttpGet("teste/{id}")]
-        //public async Task<ActionResult<ProdutoModel>> TesteQueryComParametro(int id)
-        //{
-        //    ProdutoModel produto = await _produtoRepositorio.TesteQueryComParametro(id);
-        //    return Ok(produto);
-        //}
         [HttpGet("busca/{coringa}")]
         public async Task<ActionResult<List<ProdutoModel>>> BuscarProdutoPorCoringa(string coringa)
         {

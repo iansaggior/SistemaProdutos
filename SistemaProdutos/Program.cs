@@ -25,12 +25,6 @@ namespace SistemaProdutos
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // banco SQL Server
-            //builder.Services.AddEntityFrameworkSqlServer().
-            //    AddDbContext<SistemaProdutosDBContext>(
-            //        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
-            //    );
-
             //banco MySql WorkBench
             var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionStrings");
             builder.Services.AddDbContext<SistemaProdutosDBContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
@@ -42,6 +36,12 @@ namespace SistemaProdutos
             builder.Services.AddScoped<IMovimentosRepositorio, MovimentosRepositorio>();
 
             var app = builder.Build();
+
+             app.UseCors(option => 
+                 option.AllowAnyOrigin()
+                 .AllowAnyHeader()
+                 .AllowAnyMethod()
+             );
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -58,7 +58,6 @@ namespace SistemaProdutos
                     c.ConfigObject.AdditionalItems["validatorUrl"] = null;
                 });
             }
-
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
