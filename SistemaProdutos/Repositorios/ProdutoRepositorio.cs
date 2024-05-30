@@ -144,7 +144,7 @@ namespace SistemaProdutos.Repositorios
             try
             {
                 var produtos = await BuscarTodosProdutos();
-                produtos = produtos.OrderBy(x => x.DataCadastro).ToList();
+                produtos = produtos.OrderByDescending(x => x.DataCadastro).ToList();
                 return produtos;
             }
             catch (Exception)
