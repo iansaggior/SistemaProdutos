@@ -11,7 +11,7 @@ using SistemaProdutos.Data;
 namespace SistemaProdutos.Migrations
 {
     [DbContext(typeof(SistemaProdutosDBContext))]
-    [Migration("20240522022143_Migration_definitiva")]
+    [Migration("20240530020254_Migration_definitiva")]
     partial class Migration_definitiva
     {
         /// <inheritdoc />
@@ -78,6 +78,9 @@ namespace SistemaProdutos.Migrations
                         .HasColumnType("TIMESTAMP")
                         .HasDefaultValueSql("current_timestamp");
 
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("TIMESTAMP");
+
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -126,6 +129,11 @@ namespace SistemaProdutos.Migrations
                     b.Property<int>("ProdutoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP")
+                        .HasDefaultValueSql("current_timestamp");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)

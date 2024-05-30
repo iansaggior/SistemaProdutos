@@ -75,6 +75,9 @@ namespace SistemaProdutos.Migrations
                         .HasColumnType("TIMESTAMP")
                         .HasDefaultValueSql("current_timestamp");
 
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("TIMESTAMP");
+
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -123,6 +126,11 @@ namespace SistemaProdutos.Migrations
                     b.Property<int>("ProdutoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP")
+                        .HasDefaultValueSql("current_timestamp");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)

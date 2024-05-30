@@ -9,5 +9,6 @@
         public decimal Quantidade { get; set; }
         public decimal Peso { get; set; }
         public bool Inativo { get; set; }
+        public DateTime DataCadastro { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace SistemaProdutos.Data.Map
             builder.Property(x => x.Valor).IsRequired().HasDefaultValue(0).HasColumnType("decimal(18,2)");
             builder.Property(x => x.Quantidade).IsRequired().HasDefaultValue(0).HasColumnType("decimal(18,2)");
             builder.Property(x => x.Inativo).HasDefaultValue(false);
+            builder.Property(x => x.DataCadastro).HasColumnType("TIMESTAMP").HasDefaultValueSql("current_timestamp");
         }
     }
 }

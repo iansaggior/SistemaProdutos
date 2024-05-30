@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaProdutos.Models;
 using SistemaProdutos.Repositorios.Interfaces;
+using System.Globalization;
 
 namespace SistemaProdutos.Controllers
 {
@@ -31,6 +32,12 @@ namespace SistemaProdutos.Controllers
         public async Task<ActionResult<List<ProdutoModel>>> BuscarProdutoPorCoringa(string coringa)
         {
             List<ProdutoModel> produtos = await _produtoRepositorio.BuscarProdutoPorCoringa(coringa);
+            return Ok(produtos);
+        }
+        [HttpGet("buscaPorDataCadastro")]
+        public async Task<ActionResult<List<ProdutoModel>>> BuscarTodosProdutosPorDataCadastro()
+        {
+            List<ProdutoModel> produtos = await _produtoRepositorio.BuscarProdutoPorDataCadastro();
             return Ok(produtos);
         }
         [HttpPost]
