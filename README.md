@@ -30,6 +30,7 @@ métodos get - produto
 - lista um produto de acordo com o ID: https://localhost:7214/api/Produto/{id}
 - lista produtos de acordo com um coringa na busca: https://localhost:7214/api/Produto/busca/{coringa}
 - lista os ultimos produtos cadastrados (Ordena DESC pela DataCadastro): https://localhost:7214/api/Produto/buscaPorDataCadastro
+- lista os ultimos produtos cadastrados, atraves um range de datas(Ordena DESC pela DataCadastro): https://localhost:7214/api/Produto/buscaPorDataCadastro/{dataInicio}/{dataFinal}
 
 métodos post - produto
 - cadastrar um novo produto: https://localhost:7214/api/Produto
