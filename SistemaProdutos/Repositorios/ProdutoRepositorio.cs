@@ -153,6 +153,25 @@ namespace SistemaProdutos.Repositorios
             }
         }
 
+        public async Task<List<ProdutoModel>> BuscarProdutoPorDataCadastro(DateTime dtInicio, DateTime dtFinal)
+        {
+            try
+            {
+                var produtos = await BuscarProdutoPorDataCadastro();
+
+                if (dtInicio == dtFinal)
+                    produtos = produtos.Where(x => x.DataCadastro.Date == dtInicio.Date).ToList();
+                else
+                    produtos = produtos.Where(x => x.DataCadastro.Date >= dtInicio.Date && x.DataCadastro.Date <= dtFinal.Date).ToList();
+
+                return produtos;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         public async Task<ProdutoModel> AdicionarProduto(ProdutoModel produto)
         {
