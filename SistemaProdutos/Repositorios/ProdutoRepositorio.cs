@@ -139,6 +139,21 @@ namespace SistemaProdutos.Repositorios
             }
         }
 
+        public async Task<List<ProdutoModel>> BuscarProdutoPorDataCadastro()
+        {
+            try
+            {
+                var produtos = await BuscarTodosProdutos();
+                produtos = produtos.OrderBy(x => x.DataCadastro).ToList();
+                return produtos;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
         public async Task<ProdutoModel> AdicionarProduto(ProdutoModel produto)
         {
             try

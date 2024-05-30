@@ -9,9 +9,10 @@ namespace SistemaProdutos.Models
         public string Nome { get; set; }
         public string? Descricao { get; set; }
         public decimal Valor { get; set; }
-        public decimal Quantidade { get; set; } // pendente saber se irá trabalhar apenas com inteiros ou terá números com virgula
+        public decimal Quantidade { get; set; }
         public decimal Peso { get; set; }
         public bool Inativo { get; set; }
+        public DateTime DataCadastro { get; set; }
         public string TypeAudit { get; set; }
         public DateTime DataAlteracao { get; set; }
         public virtual ProdutoModel? Produto { get; set; }
@@ -25,6 +26,7 @@ namespace SistemaProdutos.Models
             Quantidade = produto.Quantidade;
             Peso = produto.Peso;
             Inativo = produto.Inativo;
+            DataCadastro = produto.DataCadastro;
             if (existe)
             {
                 TypeAudit = "OLD";

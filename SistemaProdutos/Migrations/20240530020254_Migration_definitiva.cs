@@ -28,7 +28,8 @@ namespace SistemaProdutos.Migrations
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     Quantidade = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     Peso = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
-                    Inativo = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
+                    Inativo = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    DataCadastro = table.Column<DateTime>(type: "TIMESTAMP", nullable: false, defaultValueSql: "current_timestamp")
                 },
                 constraints: table =>
                 {
@@ -51,6 +52,7 @@ namespace SistemaProdutos.Migrations
                     Quantidade = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     Peso = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     Inativo = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DataCadastro = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
                     TypeAudit = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataAlteracao = table.Column<DateTime>(type: "TIMESTAMP", nullable: false, defaultValueSql: "current_timestamp")
