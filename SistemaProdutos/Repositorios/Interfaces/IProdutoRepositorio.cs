@@ -8,6 +8,7 @@ namespace SistemaProdutos.Repositorios.Interfaces
         Task<ProdutoModel> BuscarProdutoPorId(int id);
         Task<List<ProdutoModel>> BuscarProdutoPorCoringa(string coriga);
         Task<List<ProdutoModel>> BuscarProdutoPorDataCadastro();
+        Task<List<ProdutoModel>> BuscarProdutoPorDataCadastro(DateTime dtInicio, DateTime dtFinal);
         Task<ProdutoModel> AdicionarProduto(ProdutoModel produto);
         Task<ProdutoModel> AtualizarProdutoPorId(ProdutoModel produto, int id);
         Task<bool> InativarProduto(int id);
