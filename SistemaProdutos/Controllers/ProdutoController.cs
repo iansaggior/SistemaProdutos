@@ -47,6 +47,20 @@ namespace SistemaProdutos.Controllers
             List<ProdutoModel> produtos = await _produtoRepositorio.BuscarProdutoPorCoringa(coringa);
             return Ok(produtos);
         }
+
+        [HttpGet("busca/qtdeAsc")]
+        public async Task<ActionResult<List<ProdutoModel>>> BuscarProdutoPorQtdeAsc()
+        {
+            List<ProdutoModel> produtos = await _produtoRepositorio.BuscarProdutoPorQtdeAsc();
+            return Ok(produtos);
+        }
+        [HttpGet("busca/qtdeDesc")]
+        public async Task<ActionResult<List<ProdutoModel>>> BuscarProdutoPorQtdeDesc()
+        {
+            List<ProdutoModel> produtos = await _produtoRepositorio.BuscarProdutoPorQtdeDesc();
+            return Ok(produtos);
+        }
+
         [HttpGet("buscaPorDataCadastro")]
         public async Task<ActionResult<List<ProdutoModel>>> BuscarTodosProdutosPorDataCadastro()
         {
