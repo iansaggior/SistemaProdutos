@@ -139,6 +139,33 @@ namespace SistemaProdutos.Repositorios
             }
         }
 
+        public async Task<List<ProdutoModel>> BuscarProdutoPorQtdeAsc()
+        {
+            try
+            {
+                var produtos = await BuscarTodosProdutos();
+                produtos = produtos.OrderBy(x => x.Quantidade).ToList();
+                return produtos;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public async Task<List<ProdutoModel>> BuscarProdutoPorQtdeDesc()
+        {
+            try
+            {
+                var produtos = await BuscarTodosProdutos();
+                produtos = produtos.OrderByDescending(x => x.Quantidade).ToList();
+                return produtos;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<ProdutoModel>> BuscarProdutoPorDataCadastro()
         {
             try

@@ -32,6 +32,8 @@ métodos get - produto
 - lista todos os produtos: https://localhost:7214/api/Produto
 - lista um produto de acordo com o ID: https://localhost:7214/api/Produto/{id}
 - lista produtos de acordo com um coringa na busca: https://localhost:7214/api/Produto/busca/{coringa}
+- lista produtos de acordo com a quantidade armazenada de forma ascendente: https://localhost:7214/api/Produto/busca/qtdeAsc
+- lista produtos de acordo com a quantidade armazenada de forma descendente: https://localhost:7214/api/Produto/busca/qtdeDesc
 - lista os ultimos produtos cadastrados (Ordena DESC pela DataCadastro): https://localhost:7214/api/Produto/buscaPorDataCadastro
 - lista os ultimos produtos cadastrados, atraves um range de datas(Ordena DESC pela DataCadastro): https://localhost:7214/api/Produto/buscaPorDataCadastro/{dataInicio}/{dataFinal}
 
