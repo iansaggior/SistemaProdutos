@@ -1,8 +1,11 @@
 API de produtos
 
+A IDE utilizada para formação da API, foi o Visual Studio.
 
+Para atualizar seu banco de dados, após ter mudado o login no arquivo 'appsettings.json', ir na opção 'Controle do Gerenciador de Pacotes'
+  - Exibir -> outras janelas -> Controle/ Console do Gerenciador de Pacotes
 
-para atualizar seu banco, após ter mudado o login no arquivo 'appsettings.json', ir na opção 'Controle do Gerenciador de Pacotes' e rodar o comando:
+Rode o seguinte comando:
 
 Update-Database -Context SistemaProdutosDBContext
 
