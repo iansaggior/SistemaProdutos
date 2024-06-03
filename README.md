@@ -16,7 +16,7 @@ caso haja alguma alteração no projeto, e seja necessario criar uma nova Migrat
 
 após a criação da nova migration, certifique-se de rodar o update para atualizar as tabelas
 
-- conderar a branch 'master' como branch padrão do projeto
+- considerar a branch 'master' como branch padrão do projeto
 
 CAMINHO MÉTODOS HTTPS
 métodos get - movimentos:
