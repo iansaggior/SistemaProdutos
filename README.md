@@ -21,12 +21,12 @@ CAMINHO MÉTODOS HTTPS
 métodos get - movimentos:
 - lista todos os movimentos realizados de todos os produtos: https://localhost:7214/api/Movimentos
 - lista todos os movimentos realizados de um produto (id): https://localhost:7214/api/Movimentos/{id}
-- lista todos os movimentos realizados por um tipo (add/ rem): https://localhost:7214/api/Movimentos/type={type}
-- lista todos os movimentos realizados por um tipo (add/ rem) e por um produto (id): https://localhost:7214/api/Movimentos/id={id}/type={type}
+- lista todos os movimentos realizados por um tipo (entrada/ saida): https://localhost:7214/api/Movimentos/type={type}
+- lista todos os movimentos realizados por um tipo (entrada/ saida) e por um produto (id): https://localhost:7214/api/Movimentos/id={id}/type={type}
 - lista todos os movimentos realizados entre uma data e outra: https://localhost:7214/api/Movimentos/{dataInicio}/{dataFinal}
 - lista todos os movimentos realizados entre uma data e outra, de um produto em especifico: https://localhost:7214/api/Movimentos/{dataInicio}/{dataFinal}/id={id}
-- lista todos os movimentos realizados entre uma data e outra, de um produto em especifico, de um determinado tipo (add/ rem): https://localhost:7214/api/Movimentos/{dataInicio}/{dataFinal}/id={id}/type={type}
-- lista todos os movimentos realizados entre uma data e outra, de um determinado tipo (add/ rem): https://localhost:7214/api/Movimentos/{dataInicio}/{dataFinal}/type={type}
+- lista todos os movimentos realizados entre uma data e outra, de um produto em especifico, de um determinado tipo (entrada/ saida): https://localhost:7214/api/Movimentos/{dataInicio}/{dataFinal}/id={id}/type={type}
+- lista todos os movimentos realizados entre uma data e outra, de um determinado tipo (entrada/ saida): https://localhost:7214/api/Movimentos/{dataInicio}/{dataFinal}/type={type}
 
 métodos get - produto
 - lista todos os produtos: https://localhost:7214/api/Produto
